@@ -278,4 +278,129 @@ security:
 
 ---
 
+## Roadmap (扩展路线图)
+
+基于 [Routa](https://github.com/phodal/routa) 的多 Agent 协调架构，Harness 可以按以下阶段扩展：
+
+### Phase 1: 基础完善 (MVP+)
+
+- [ ] **容器化 Agent Pod**
+  - Docker 容器隔离
+  - cgroup 资源限制
+  - 健康检查
+
+- [ ] **任务队列外置**
+  - Redis 任务队列
+  - 持久化存储 (SQLite/PostgreSQL)
+  - 失败重试机制
+
+### Phase 2: 多 Agent 协调
+
+- [ ] **Agent 角色系统**
+  ```
+  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+  │ Coordinator │───▶│  Crafter   │───▶│   Gate      │
+  │  (规划者)   │    │  (执行者)   │    │  (验证者)   │
+  └─────────────┘    └─────────────┘    └─────────────┘
+  ```
+
+- [ ] **多协议支持**
+  - **MCP**: Model Context Protocol - 工具协调
+  - **ACP**: Agent Client Protocol - Agent 生命周期
+  - **A2A**: Agent-to-Agent - 跨平台通信
+
+### Phase 3: 任务编排
+
+- [ ] **任务依赖图**
+  - DAG 任务调度
+  - 并行执行
+  - 条件分支
+
+- [ ] **Agent 间通信**
+  - 消息传递
+  - 共享上下文
+  - 事件流
+
+### Phase 4: 能力扩展
+
+- [ ] **Skill 系统**
+  - 动态技能加载
+  - 技能市场/注册表
+  - 自定义 MCP Server
+
+- [ ] **虚拟工作区**
+  - GitHub 仓库虚拟挂载
+  - 无需本地 Clone
+  - 代码浏览与审查
+
+### Phase 5: 企业级特性
+
+- [ ] **多租户支持**
+  - 用户隔离
+  - 配额管理
+  - 计费/审计
+
+- [ ] **高可用部署**
+  - K8s Operator
+  - 自动扩缩容
+  - 多区域部署
+
+### Phase 6: 生态系统
+
+- [ ] **Agent 注册表**
+  - 社区 Agent 市场
+  - 一键安装 (npx/uvx)
+
+- [ ] **协议桥接**
+  - Claude Code 集成
+  - OpenCode/Codex 集成
+  - Gemini CLI 集成
+
+---
+
+## 架构演进
+
+```
+Phase 1: 单 Agent
+┌─────────────┐
+│   Harness   │
+│ Controller  │
+└──────┬──────┘
+       │
+    Agent Pod
+
+Phase 2: 多 Agent
+┌─────────────┐
+│   Harness   │◀────┐
+│ Controller  │     │
+└──────┬──────┘     │
+       │            │
+  ┌────┴────┐      │
+  ▼         ▼      │
+Agent    Agent     │
+(Pod A)  (Pod B)───┘
+
+Phase 3: Agent 协调
+┌─────────────┐
+│   Routa/    │◀── MCP + ACP + A2A
+│   Harness   │
+└──────┬──────┘
+       │
+  ┌────┴────┬────────┐
+  ▼         ▼        ▼
+Coord    Crafter   Gate
+(规划)   (执行)    (验证)
+```
+
+---
+
+## 相关资源
+
+- [Routa - Multi-Agent Coordination Platform](https://github.com/phodal/routa)
+- [MCP - Model Context Protocol](https://modelcontextprotocol.io/)
+- [ACP - Agent Client Protocol](https://github.com/agentclientprotocol/sdk)
+- [A2A - Agent-to-Agent Protocol](https://a2a-js.github.io/sdk/)
+
+---
+
 MIT License
