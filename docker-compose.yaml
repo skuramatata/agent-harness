@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  harness-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    restart: unless-stopped
+
+  # 可选的 Redis 用于任务队列
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+volumes:
+  redis-data:
